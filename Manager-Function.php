@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             addProduct($product);
             break;
         case ACTION_UPDATE:
+            $product->setDate($_POST['date']);
             updateProduct(getIndexById($_POST['idOld']), $product);
             break;
         case ACTION_DELETE:
@@ -43,8 +44,6 @@ function updateProduct($index, $product){
     $listProducts = $GLOBALS['manager']->listProduct();
     $data = [];
     $listProducts[$index] = $product;
-//    echo "<pre>";
-//    var_dump($listProducts);
     foreach ($listProducts as $product) {
         array_push($data, objToArray($product));
     }
