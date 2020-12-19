@@ -13,6 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $id = $_POST['id'];
 
     $manager = new ProductManager();
+    $data = loadData();
+    foreach ($data as $value){
+        $manager->add(arrayToObj($value));
+    }
+
     $product = new Product($id,$_POST['name'],$_POST['category'],$_POST['amount'],$_POST['price'],$_POST['description'],$_POST['date'],$_POST['img']);
 
     switch ($action){
@@ -40,13 +45,20 @@ function updateProduct($index, $product){
 
 function deleteProduct($index){
     $GLOBALS['manager']->delete($index);
+    $data = [];
+    $listProducts = $GLOBALS['manager']->listProduct();
+    foreach ($listProducts as $product) {
+        array_push($data, objToArray($product));
+    }
+    saveData($data, true);
 }
 
 function getIndexById($id){
-    foreach ($GLOBALS['manager'] as $key=>$value){
+    $listProducts = $GLOBALS['manager']->listProduct();
+    foreach ($listProducts as $key=>$value){
         if ($value->getId() == $id){
             return $key;
         }
     }
-    return 0;
+    return -1;
 }
