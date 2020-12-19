@@ -24,10 +24,18 @@ $listProducts = $manager->listProduct();
     <title>Document</title>
 </head>
 <body>
+<script>
+    function confirmDelete(id){
+        let confirm = window.confirm("Do you really want to delete it !?!?!?");
+        if (confirm == true) {
+            document.getElementById("deleteBtn" + id).click();
+        }
+    }
+</script>
 <form action="" method="post">
     <table>
-        <caption>From: <input id="123" type="date" name="searchFrom" required>
-            To: <input type="date" name="searchTo" required>
+        <caption>
+            Date created: <input id="123" type="date" name="searchDate" required>
             <button class="submitBtn" type="submit" onclick="test()">Search</button>
         </caption>
     </table>
@@ -55,17 +63,18 @@ $listProducts = $manager->listProduct();
                 <td><?php echo $product->getPrice() ?></td>
                 <td><?php echo $product->getDescription() ?></td>
                 <td><?php echo $product->getDate() ?></td>
-                <td><?php echo $product->getImg() ?></td>
+                <td><img class="image" src="<?php echo $product->getImg() ?>" alt="img"></td>
                 <td>
-                    <form id="editForm" action="EditPage.php" method="post" style="display: inline">
+                    <form id="editForm<?php echo $product->getId();?>" action="EditPage.php" method="post" style="display: inline">
                         <input type="text" name="id" value="<?php echo $product->getId() ?>" hidden>
                         <input type="text" name="action" value="edit" hidden>
-                        <button type="submit" form="editForm">Edit</button>
+                        <button type="submit" form="editForm<?php echo $product->getId();?>">Edit</button>
                     </form>
-                    <form id="deleteForm" action="Manager-Function.php" method="post" style="display: inline">
+                    <form id="deleteForm<?php echo $product->getId();?>" action="Manager-Function.php" method="post" style="display: inline">
                         <input type="text" name="id" value="<?php echo $product->getId() ?>" hidden>
                         <input type="text" name="action" value="delete" hidden>
-                        <button type="submit" form="deleteForm">Delete</button>
+                        <button type="button" onclick="confirmDelete('<?php echo $product->getId();?>')">Delete</button>
+                        <button type="submit" form="deleteForm<?php echo $product->getId();?>" id="deleteBtn<?php echo $product->getId();?>" hidden></button>
                     </form>
                 </td>
             </tr>
@@ -76,17 +85,10 @@ $listProducts = $manager->listProduct();
         </tr>
     <?php endif; ?>
 </table>
-<script>
-    function test(){
-        alert(document.getElementById('123').value)
-    }
-</script>
 </body>
 </html>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == "POST"){
     $searchFrom = $_POST['searchFrom'];
     $searchTo = $_POST['searchTo'];
-
-    
 }
