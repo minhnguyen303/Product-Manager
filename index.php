@@ -28,7 +28,7 @@ $listProducts = $manager->listProduct();
     <table>
         <caption>From: <input id="123" type="date" name="searchFrom" required>
             To: <input type="date" name="searchTo" required>
-            <button class="submitBtn" type="button" onclick="test()">Search</button>
+            <button class="submitBtn" type="submit" onclick="test()">Search</button>
         </caption>
     </table>
 </form>
@@ -57,15 +57,15 @@ $listProducts = $manager->listProduct();
                 <td><?php echo $product->getDate() ?></td>
                 <td><?php echo $product->getImg() ?></td>
                 <td>
-                    <form action="EditPage.php" method="post" style="display: inline">
+                    <form id="editForm" action="EditPage.php" method="post" style="display: inline">
                         <input type="text" name="id" value="<?php echo $product->getId() ?>" hidden>
-                        <input type="text" name="action" value="update" hidden>
-                        <button name="" value="">Edit</button>
+                        <input type="text" name="action" value="edit" hidden>
+                        <button type="submit" form="editForm">Edit</button>
                     </form>
-                    <form action="Manager-Function.php" method="post" style="display: inline">
+                    <form id="deleteForm" action="Manager-Function.php" method="post" style="display: inline">
                         <input type="text" name="id" value="<?php echo $product->getId() ?>" hidden>
                         <input type="text" name="action" value="delete" hidden>
-                        <button>Delete</button>
+                        <button type="submit" form="deleteForm">Delete</button>
                     </form>
                 </td>
             </tr>
@@ -83,3 +83,10 @@ $listProducts = $manager->listProduct();
 </script>
 </body>
 </html>
+<?php
+if ($_SERVER['REQUEST_METHOD'] == "POST"){
+    $searchFrom = $_POST['searchFrom'];
+    $searchTo = $_POST['searchTo'];
+
+    
+}

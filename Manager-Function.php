@@ -18,14 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $manager->add(arrayToObj($value));
     }
 
-    $product = new Product($id,$_POST['name'],$_POST['category'],$_POST['amount'],$_POST['price'],$_POST['description'],$_POST['date'],$_POST['img']);
+    $product = new Product($id,$_POST['name'],$_POST['category'],$_POST['amount'],$_POST['price'],$_POST['description'],date('d/m/Y'),$_POST['img']);
 
     switch ($action){
         case ACTION_ADD:
             addProduct($product);
             break;
         case ACTION_UPDATE:
-            updateProduct();
+            updateProduct(getIndexById($_POST['idOld']), $product);
             break;
         case ACTION_DELETE:
             deleteProduct(getIndexById($id));
@@ -40,7 +40,15 @@ function addProduct($product){
 }
 
 function updateProduct($index, $product){
-
+    $listProducts = $GLOBALS['manager']->listProduct();
+    $data = [];
+    $listProducts[$index] = $product;
+//    echo "<pre>";
+//    var_dump($listProducts);
+    foreach ($listProducts as $product) {
+        array_push($data, objToArray($product));
+    }
+    saveData($data, true);
 }
 
 function deleteProduct($index){
@@ -61,4 +69,13 @@ function getIndexById($id){
         }
     }
     return -1;
+}
+
+function getListProducts(){
+    $list = [];
+    $data = loadData();
+    foreach ($data as $value){
+        array_push($list, arrayToObj($value));
+    }
+    return $list;
 }

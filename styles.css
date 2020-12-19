@@ -41,8 +41,12 @@ table{
     background-color: #fff;
 }
 
-th, td{
+#listTable th, td{
     border-bottom: 1px solid #909090;
+}
+
+#editTable{
+    width: 50%;
 }
 
 td{
